@@ -1,0 +1,8 @@
+# Core dependencies
+fpdf2>=2.7.0
+rank-bm25>=0.2.2
+
+# Optional -- improves retrieval quality significantly
+# Install these for production-quality embeddings and re-ranking:
+# sentence-transformers>=2.2.0
+# torch>=2.0.0

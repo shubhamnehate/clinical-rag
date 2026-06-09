@@ -1,0 +1,227 @@
+{
+  "description": "Clinical RAG Evaluation Set — 20 questions over 5 synthetic patient records",
+  "version": "1.0",
+  "notes": "All patient data is synthetic. Expected answers are gold-standard references from source documents.",
+  "questions": [
+    {
+      "id": "Q01",
+      "patient": "patient_A",
+      "query_type": "factual_lookup",
+      "query": "What were the discharge medications for Patient A?",
+      "expected_keywords": ["aspirin 81", "clopidogrel 75", "atorvastatin 80", "metoprolol", "lisinopril", "metformin", "ezetimibe"],
+      "expected_section": "DISCHARGE MEDICATIONS",
+      "gold_answer": "7 medications: Aspirin 81mg, Clopidogrel 75mg (12 months), Atorvastatin 80mg, Metoprolol succinate 25mg BD, Lisinopril 5mg, Metformin 500mg BD, Ezetimibe 10mg.",
+      "difficulty": "easy",
+      "requires_docs": ["patient_A_discharge"]
+    },
+    {
+      "id": "Q02",
+      "patient": "patient_A",
+      "query_type": "factual_lookup",
+      "query": "What was Patient A's ejection fraction at discharge?",
+      "expected_keywords": ["45%", "ejection fraction", "EF"],
+      "expected_section": "HOSPITAL COURSE",
+      "gold_answer": "LVEF improved from 38% on admission to 45% by Day 3/4 post-PCI.",
+      "difficulty": "easy",
+      "requires_docs": ["patient_A_discharge", "patient_A_radiology"]
+    },
+    {
+      "id": "Q03",
+      "patient": "patient_A",
+      "query_type": "factual_lookup",
+      "query": "What were the troponin levels for Patient A during the admission?",
+      "expected_keywords": ["troponin", "18.7", "245", "0.04"],
+      "expected_section": "INVESTIGATIONS",
+      "gold_answer": "Troponin I trend: 0.04 (borderline) → 18.7 ng/mL → peak 245 ng/mL post-PCI → 12.4 ng/mL on Day 3 (resolving).",
+      "difficulty": "medium",
+      "requires_docs": ["patient_A_discharge", "patient_A_labs"]
+    },
+    {
+      "id": "Q04",
+      "patient": "patient_A",
+      "query_type": "explanation",
+      "query": "Why was clopidogrel prescribed to Patient A?",
+      "expected_keywords": ["dual antiplatelet", "DES", "drug-eluting stent", "PCI", "post"],
+      "expected_section": "DISCHARGE MEDICATIONS",
+      "gold_answer": "Clopidogrel 75mg for 12 months as dual antiplatelet therapy following drug-eluting stent (DES) placement during primary PCI.",
+      "difficulty": "medium",
+      "requires_docs": ["patient_A_discharge"]
+    },
+    {
+      "id": "Q05",
+      "patient": "patient_A",
+      "query_type": "explanation",
+      "query": "Why was ezetimibe added to Patient A's medications?",
+      "expected_keywords": ["LDL", "1.4", "post-ACS", "target", "statin"],
+      "expected_section": "DISCHARGE MEDICATIONS",
+      "gold_answer": "Ezetimibe 10mg was added because LDL of 3.2 mmol/L was significantly above the post-ACS target of <1.4 mmol/L despite statin therapy.",
+      "difficulty": "medium",
+      "requires_docs": ["patient_A_discharge", "patient_A_labs"]
+    },
+    {
+      "id": "Q06",
+      "patient": "patient_A",
+      "query_type": "factual_lookup",
+      "query": "What intervention was performed for Patient A in the cath lab?",
+      "expected_keywords": ["PCI", "LAD", "stent", "drug-eluting", "3.0", "28 mm"],
+      "expected_section": "HOSPITAL COURSE",
+      "gold_answer": "Primary PCI with 3.0 × 28 mm drug-eluting stent (Xience) deployed to mid-LAD (99% occlusion), achieving TIMI 3 flow.",
+      "difficulty": "easy",
+      "requires_docs": ["patient_A_discharge"]
+    },
+    {
+      "id": "Q07",
+      "patient": "patient_A",
+      "query_type": "temporal",
+      "query": "How did Patient A's LDL and EF change over the admission?",
+      "expected_keywords": ["LDL", "3.2", "EF", "38%", "45%"],
+      "expected_section": "INVESTIGATIONS",
+      "gold_answer": "EF improved 38% → 45%. LDL remained elevated at 3.2 mmol/L (above target <1.4); ezetimibe added.",
+      "difficulty": "hard",
+      "requires_docs": ["patient_A_discharge", "patient_A_labs", "patient_A_radiology"]
+    },
+    {
+      "id": "Q08",
+      "patient": "patient_A",
+      "query_type": "factual_lookup",
+      "query": "What does the echocardiogram show for Patient A?",
+      "expected_keywords": ["LVEF", "45%", "hypokinesis", "anterior", "mitral regurgitation"],
+      "expected_section": "IMPRESSION",
+      "gold_answer": "LVEF 45% (Biplane Simpson), mild anterior and apical hypokinesis (LAD territory), mild MR grade 1+, no LV thrombus, no pericardial effusion.",
+      "difficulty": "easy",
+      "requires_docs": ["patient_A_radiology"]
+    },
+    {
+      "id": "Q09",
+      "patient": "patient_A",
+      "query_type": "factual_lookup",
+      "query": "What allergy does Patient A have?",
+      "expected_keywords": ["penicillin", "rash", "allerg"],
+      "expected_section": "ALLERGIES",
+      "gold_answer": "Penicillin allergy (rash).",
+      "difficulty": "easy",
+      "requires_docs": ["patient_A_discharge"]
+    },
+    {
+      "id": "Q10",
+      "patient": "patient_A",
+      "query_type": "explanation",
+      "query": "Why was metformin held peri-procedure and then restarted?",
+      "expected_keywords": ["metformin", "procedure", "creatinine", "renal"],
+      "expected_section": "HOSPITAL COURSE",
+      "gold_answer": "Metformin held peri-procedure (contrast risk to kidneys). Restarted at reduced dose (500mg BD) once renal function stable post-procedure.",
+      "difficulty": "hard",
+      "requires_docs": ["patient_A_discharge", "patient_A_labs"]
+    },
+    {
+      "id": "Q11",
+      "patient": "patient_B",
+      "query_type": "factual_lookup",
+      "query": "What were Patient B's vital signs on admission?",
+      "expected_keywords": ["BP", "148", "HR", "88", "SpO2", "91%", "RR", "22"],
+      "expected_section": "PHYSICAL EXAMINATION ON ADMISSION",
+      "gold_answer": "BP 148/88 mmHg, HR 88 bpm (AF), RR 22, SpO2 91% on room air. Weight 78 kg.",
+      "difficulty": "easy",
+      "requires_docs": ["patient_B_discharge"]
+    },
+    {
+      "id": "Q12",
+      "patient": "patient_B",
+      "query_type": "factual_lookup",
+      "query": "What was Patient B's BNP on admission and how did it change?",
+      "expected_keywords": ["2840", "1650", "980", "BNP", "pg/mL"],
+      "expected_section": "INVESTIGATIONS",
+      "gold_answer": "BNP trended down: 2840 → 1650 → 980 pg/mL (day 5). Prior baseline 600-800 pg/mL.",
+      "difficulty": "medium",
+      "requires_docs": ["patient_B_discharge", "patient_B_progress_note"]
+    },
+    {
+      "id": "Q13",
+      "patient": "patient_B",
+      "query_type": "explanation",
+      "query": "What caused Patient B's hospital admission?",
+      "expected_keywords": ["non-compliance", "furosemide", "decompensated", "heart failure", "fluid"],
+      "expected_section": "HOSPITAL COURSE",
+      "gold_answer": "Acute decompensated HFrEF secondary to furosemide non-compliance (missed doses during travel) and likely dietary indiscretion, leading to 4 kg fluid retention.",
+      "difficulty": "medium",
+      "requires_docs": ["patient_B_discharge"]
+    },
+    {
+      "id": "Q14",
+      "patient": "patient_B",
+      "query_type": "factual_lookup",
+      "query": "What are the discharge medications for Patient B?",
+      "expected_keywords": ["furosemide", "carvedilol", "sacubitril", "spironolactone", "digoxin", "warfarin", "potassium"],
+      "expected_section": "DISCHARGE MEDICATIONS",
+      "gold_answer": "8 medications: Furosemide 80mg BD, Carvedilol 12.5mg BD, Sacubitril/Valsartan 49/51mg BD, Spironolactone 25mg, Digoxin 125mcg, Warfarin (adjusted), KCl 600mg BD x2wks, Alendronate 70mg weekly.",
+      "difficulty": "easy",
+      "requires_docs": ["patient_B_discharge"]
+    },
+    {
+      "id": "Q15",
+      "patient": "patient_B",
+      "query_type": "explanation",
+      "query": "Why was Entresto held and then restarted at a lower dose for Patient B?",
+      "expected_keywords": ["entresto", "renal", "creatinine", "AKI", "held", "restarted"],
+      "expected_section": "HOSPITAL COURSE",
+      "gold_answer": "Entresto held Days 1-2 due to AKI (creatinine 148 µmol/L, eGFR 38). Restarted Day 3 at reduced dose 49/51mg BD once creatinine stabilised at 138 (eGFR 43).",
+      "difficulty": "hard",
+      "requires_docs": ["patient_B_discharge", "patient_B_progress_note"]
+    },
+    {
+      "id": "Q16",
+      "patient": "patient_B",
+      "query_type": "temporal",
+      "query": "How did Patient B's weight and fluid status change during the admission?",
+      "expected_keywords": ["78 kg", "74", "oedema", "diuresis", "1400 mL"],
+      "expected_section": "HOSPITAL COURSE",
+      "gold_answer": "Weight decreased from 78 kg (admission) to 74.2 kg (discharge), net diuresis 1.0-1.5 L/day. Day 3: 75.8 kg, oedema improved from 3+ to 1+.",
+      "difficulty": "hard",
+      "requires_docs": ["patient_B_discharge", "patient_B_progress_note"]
+    },
+    {
+      "id": "Q17",
+      "patient": "patient_B",
+      "query_type": "factual_lookup",
+      "query": "What is the 'traffic light' action plan given to Patient B on discharge?",
+      "expected_keywords": ["green", "amber", "red", "weight", "furosemide", "breathlessness"],
+      "expected_section": "EDUCATION TODAY",
+      "gold_answer": "Green: stable weight. Amber: +2kg over 48h or increased breathlessness — double furosemide, call GP. Red: breathlessness at rest, +3kg, chest pain — go to ED.",
+      "difficulty": "medium",
+      "requires_docs": ["patient_B_progress_note"]
+    },
+    {
+      "id": "Q18",
+      "patient": "patient_B",
+      "query_type": "factual_lookup",
+      "query": "What is Patient B's target INR and current anticoagulant?",
+      "expected_keywords": ["warfarin", "INR", "2.0", "3.0", "atrial fibrillation"],
+      "expected_section": "DISCHARGE MEDICATIONS",
+      "gold_answer": "Warfarin with target INR 2.0-3.0 for permanent atrial fibrillation. INR 2.4 on Day 3 (therapeutic).",
+      "difficulty": "easy",
+      "requires_docs": ["patient_B_discharge", "patient_B_progress_note"]
+    },
+    {
+      "id": "Q19",
+      "patient": "patient_B",
+      "query_type": "explanation",
+      "query": "What was Patient B's baseline ejection fraction and underlying heart condition?",
+      "expected_keywords": ["HFrEF", "30-35%", "ejection fraction", "myocarditis", "viral"],
+      "expected_section": "PAST MEDICAL HISTORY",
+      "gold_answer": "HFrEF with LVEF 30-35%, diagnosed 2021 following viral myocarditis.",
+      "difficulty": "easy",
+      "requires_docs": ["patient_B_discharge"]
+    },
+    {
+      "id": "Q20",
+      "patient": "patient_B",
+      "query_type": "factual_lookup",
+      "query": "What electrolyte abnormalities were found for Patient B and how were they treated?",
+      "expected_keywords": ["potassium", "3.3", "hypokalaemia", "KCl", "replacement", "sodium", "133"],
+      "expected_section": "INVESTIGATIONS",
+      "gold_answer": "Hypokalaemia (K+ 3.3 mmol/L) treated with IV KCl Day 1 then oral supplementation; normalised to 3.9 on Day 3. Mild hyponatraemia (Na 133 mmol/L), improved with diuresis.",
+      "difficulty": "medium",
+      "requires_docs": ["patient_B_discharge", "patient_B_progress_note"]
+    }
+  ]
+}

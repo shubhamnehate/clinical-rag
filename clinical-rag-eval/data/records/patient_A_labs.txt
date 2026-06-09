@@ -1,0 +1,43 @@
+LABORATORY REPORT
+Patient: [PATIENT_A]
+MRN: [MRN_REDACTED]
+Ordering Provider: [PROVIDER_1]
+Collection Date: 2026-01-12 (Day 3 post-PCI)
+
+HAEMATOLOGY
+-----------
+WBC:          8.4 × 10⁹/L      (Ref: 4.0–11.0)    Normal
+Haemoglobin:  136 g/L           (Ref: 130–175)     Normal
+Haematocrit:  0.40              (Ref: 0.40–0.52)   Normal
+Platelets:    198 × 10⁹/L      (Ref: 150–400)     Normal
+Neutrophils:  5.6 × 10⁹/L      (Ref: 2.0–7.5)     Normal
+
+BIOCHEMISTRY
+------------
+Sodium:       138 mmol/L        (Ref: 135–145)     Normal
+Potassium:    4.1 mmol/L        (Ref: 3.5–5.0)     Normal
+Creatinine:   102 μmol/L        (Ref: 62–106)      Normal
+eGFR:         66 mL/min/1.73m²  (Ref: >60)         Normal
+Urea:         7.2 mmol/L        (Ref: 2.5–7.8)     Normal
+Glucose (fasting): 9.8 mmol/L  (Ref: 4.0–7.0)     HIGH
+HbA1c:        8.4%              (Ref: <7.0%)       HIGH
+ALT:          34 U/L            (Ref: 7–56)        Normal
+AST:          28 U/L            (Ref: 10–40)       Normal
+CK:           1240 U/L          (Ref: 40–320)      HIGH — post-MI elevation
+Troponin I:   12.4 ng/mL        (Ref: <0.04)       HIGH — resolving, was 245 peak
+BNP:          380 pg/mL         (Ref: <100)        HIGH — improving (was 620)
+LDL Cholesterol: 3.2 mmol/L    (Ref: <1.4 post-ACS) HIGH — target not met
+HDL Cholesterol: 0.9 mmol/L    (Ref: >1.0)        LOW
+Total Cholesterol: 5.1 mmol/L  (Ref: <4.0)        HIGH
+Triglycerides: 2.4 mmol/L      (Ref: <1.7)        HIGH
+
+COAGULATION
+-----------
+PT/INR:       1.1               (Ref: 0.8–1.2)     Normal
+APTT:         38 s              (Ref: 25–38)       Normal
+
+NOTES:
+- Troponin trend: 0.04 → 18.7 → 245 → 12.4 ng/mL (now resolving)
+- LDL 3.2 mmol/L — significantly above post-ACS target of <1.4; ezetimibe added
+- Glucose control suboptimal; diabetes team review requested
+- Renal function stable; metformin resumed at reduced dose

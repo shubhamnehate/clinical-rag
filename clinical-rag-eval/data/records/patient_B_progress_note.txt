@@ -1,0 +1,50 @@
+PROGRESS NOTE
+Patient: [PATIENT_B]
+MRN: [MRN_REDACTED]
+Date: 2026-01-21 (Day 3 post-admission)
+Author: [PROVIDER_3]
+
+SUBJECTIVE:
+Patient reports significant improvement in breathing. Dyspnoea now only on moderate
+exertion (previously at rest). Orthopnoea resolved — sleeping flat for first time in
+weeks. Leg swelling noticeably reduced. No chest pain. Good urine output.
+Appetite returning. Denies dizziness or light-headedness.
+
+OBJECTIVE:
+Vitals: BP 132/80 mmHg, HR 82 bpm (AF), RR 16, SpO2 95% on room air
+Weight: 75.8 kg (down 2.2 kg from admission weight 78 kg)
+Net fluid balance (24h): -1400 mL
+JVP: Reduced (3 cm above sternal angle)
+Cardiovascular: Irregular rhythm, S3 no longer audible
+Respiratory: Fine bibasilar crackles, reduced (previously mid-zone, now just bases)
+Oedema: Bilateral 1+ pitting to ankles (improved from 3+ to knees)
+
+Labs today:
+- Creatinine: 138 μmol/L (improved from 148 on admission; eGFR now 43)
+- Potassium: 3.9 mmol/L (normalised with replacement)
+- BNP: 1650 pg/mL (down from 2840 — improving)
+- INR: 2.6 (therapeutic)
+
+ASSESSMENT:
+Responding well to IV diuresis. Fluid removal progressing appropriately.
+Renal function stabilising — important to avoid over-diuresis given CKD.
+Potassium now replete. BNP trend favourable.
+
+PLAN:
+1. Continue IV furosemide 160 mg BD — reassess tomorrow
+2. Continue potassium chloride IV replacement PRN (target K+ >4.0)
+3. Restart Entresto at reduced dose (49/51 mg BD) today — renal function stable
+4. Continue carvedilol, digoxin, warfarin unchanged
+5. Target: weight 74 kg (dry weight), SpO2 >95% RA before discharge
+6. Arrange heart failure nurse visit for education session this afternoon
+7. Recheck electrolytes and creatinine tomorrow morning
+8. Plan discharge tomorrow if continues to improve
+
+EDUCATION TODAY:
+Discussed importance of medication compliance with patient and family.
+Explained 'traffic light' symptom action plan:
+  Green: Weight stable, no breathlessness — continue medications
+  Amber: Weight +2 kg over 48h or increased breathlessness — double furosemide dose,
+         call GP or heart failure nurse within 24 hours
+  Red: Breathlessness at rest, weight +3 kg, chest pain — go to ED immediately
+Patient verbalised understanding. Written plan provided.

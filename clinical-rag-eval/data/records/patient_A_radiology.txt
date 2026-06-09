@@ -1,0 +1,56 @@
+RADIOLOGY REPORT
+Patient: [PATIENT_A]
+MRN: [MRN_REDACTED]
+Study: Transthoracic Echocardiogram (TTE)
+Date: 2026-01-14 (Day 4 post-PCI)
+Performed by: Cardiology Sonographer
+Reported by: [PROVIDER_2], Cardiologist
+
+INDICATION:
+Anterior STEMI post-primary PCI. Assess left ventricular function and wall motion.
+
+TECHNIQUE:
+Standard transthoracic echocardiographic examination performed in left lateral
+decubitus and supine positions. Adequate image quality obtained.
+
+FINDINGS:
+Left Ventricle:
+- LV size: Normal (LVEDV 105 mL, LVESV 58 mL)
+- Left Ventricular Ejection Fraction (LVEF): 45% (Biplane Simpson method)
+  [Admission estimate: 38%; Day 3 estimate: 45%; today: 45%]
+- Wall motion: Mild residual hypokinesis of anterior wall and apex
+  (mid and distal LAD territory). No akinesis or dyskinesis.
+- No LV thrombus identified.
+- No significant LV outflow obstruction.
+
+Left Atrium:
+- LA volume index: 32 mL/m² (mildly dilated; Ref <34 mL/m²)
+- No thrombus in left atrial appendage.
+
+Right Ventricle:
+- Normal RV size and systolic function (TAPSE 22 mm)
+
+Valves:
+- Mitral valve: Mild mitral regurgitation (MR grade 1+), trace prolapse
+  No stenosis.
+- Aortic valve: Mildly thickened leaflets, no significant stenosis or regurgitation
+  (Vmax 1.4 m/s)
+- Tricuspid valve: Trace tricuspid regurgitation
+  Estimated RVSP 32 mmHg (mildly elevated)
+- Pulmonic valve: Normal
+
+Pericardium:
+- No pericardial effusion.
+
+IMPRESSION:
+1. Mildly reduced LVEF 45% with mild anterior and apical hypokinesis,
+   consistent with recovering anterior STEMI territory (LAD distribution).
+2. LVEF improved from admission estimate of 38% — favourable trend.
+3. Mild mitral regurgitation — likely ischaemic in aetiology; monitor at follow-up.
+4. No LV thrombus. No significant pericardial effusion.
+5. Mildly elevated estimated pulmonary pressure — correlate clinically.
+
+RECOMMENDATION:
+Repeat TTE in 6–8 weeks to reassess LVEF. Cardiac MRI may be considered
+if EF does not improve to ≥50% for definitive scar assessment.
+Consider ICD implant evaluation if EF remains <35% at 3-month assessment.

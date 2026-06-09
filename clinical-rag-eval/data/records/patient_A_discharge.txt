@@ -1,0 +1,93 @@
+DISCHARGE SUMMARY
+Patient: [PATIENT_A]
+MRN: [MRN_REDACTED]
+Date of Admission: 2026-01-10
+Date of Discharge: 2026-01-15
+Attending: [PROVIDER_1]
+
+CHIEF COMPLAINT:
+Acute chest pain with radiation to the left arm, onset 3 hours prior to arrival.
+
+HISTORY OF PRESENT ILLNESS:
+[PATIENT_A] is a 67-year-old male with a known history of hypertension, type 2 diabetes
+mellitus, and hyperlipidaemia who presented via ambulance with crushing substernal chest
+pain (8/10), diaphoresis, and shortness of breath. Symptoms began at rest at approximately
+0600 on 2026-01-10. No prior episodes of similar chest pain. No recent travel or
+prolonged immobilisation.
+
+PAST MEDICAL HISTORY:
+- Hypertension (diagnosed 2015)
+- Type 2 Diabetes Mellitus (diagnosed 2018)
+- Hyperlipidaemia (diagnosed 2019)
+- No prior cardiac events
+
+MEDICATIONS ON ADMISSION:
+- Metformin 1000 mg twice daily
+- Lisinopril 10 mg once daily
+- Atorvastatin 40 mg nightly
+- Aspirin 81 mg once daily
+
+ALLERGIES:
+Penicillin (rash)
+
+PHYSICAL EXAMINATION ON ADMISSION:
+Vital Signs: BP 158/94 mmHg, HR 102 bpm, RR 20, SpO2 94% on room air, Temp 37.2°C
+General: Diaphoretic, in moderate distress
+Cardiovascular: Tachycardic, regular rhythm, no murmurs, no S3
+Respiratory: Mild bibasilar crackles
+Abdomen: Soft, non-tender
+Extremities: No peripheral oedema
+
+INVESTIGATIONS:
+ECG: ST elevation 2-4 mm in leads V1-V5, reciprocal changes in inferior leads
+Troponin I (0600): 0.04 ng/mL (normal <0.04) → borderline
+Troponin I (0900): 18.7 ng/mL (ELEVATED)
+CK-MB: 85 U/L (elevated)
+BNP: 620 pg/mL (elevated)
+Glucose: 14.2 mmol/L
+HbA1c: 8.4%
+Creatinine: 98 μmol/L
+eGFR: 68 mL/min/1.73m²
+WBC: 13.1 × 10⁹/L
+Haemoglobin: 138 g/L
+
+Chest X-Ray: Mild pulmonary oedema, no pneumothorax
+Echocardiogram: EF 38%, anterior wall hypokinesis, mild MR
+
+HOSPITAL COURSE:
+Patient was taken emergently to the cath lab. Coronary angiography demonstrated
+99% occlusion of the mid-LAD. Successful primary PCI performed with deployment of
+a 3.0 × 28 mm drug-eluting stent (Xience). TIMI 3 flow achieved post-procedure.
+Post-procedure troponin peak 245 ng/mL.
+
+Patient was monitored in CCU for 48 hours. Maintained on dual antiplatelet therapy,
+heparin infusion (weaned over 24 hours), high-intensity statin, and beta-blocker.
+Glucose managed with sliding scale insulin; metformin held peri-procedure.
+Echocardiogram day 3 showed EF improved to 45%, resolving anterior hypokinesis.
+No arrhythmias on telemetry. Ambulated day 2 without symptoms.
+
+DISCHARGE CONDITION:
+Stable. Alert and oriented. Ambulatory.
+
+DISCHARGE MEDICATIONS:
+1. Aspirin 81 mg daily — indefinitely (antiplatelet, post-PCI)
+2. Clopidogrel 75 mg daily — 12 months (dual antiplatelet therapy, DES)
+3. Atorvastatin 80 mg nightly — (high-intensity, post-ACS)
+4. Metoprolol succinate 25 mg twice daily — (beta-blocker, post-MI)
+5. Lisinopril 5 mg daily — (ACE inhibitor, post-MI; titrate up)
+6. Metformin 500 mg twice daily — (restart post-procedure; hold if Cr rises)
+7. Ezetimibe 10 mg daily — (added: LDL target <1.4 mmol/L post-ACS)
+
+FOLLOW-UP PLAN:
+- Cardiology outpatient clinic in 1 week (wound check, medication review)
+- Primary care in 2 weeks (diabetes management, BP titration)
+- Cardiac rehabilitation referral made
+- Repeat echocardiogram in 6 weeks (assess EF recovery)
+- Patient counselled: dual antiplatelet compliance critical, no NSAID use
+
+DIAGNOSIS:
+1. Anterior STEMI (Type 1 MI), successfully revascularised with PCI to LAD
+2. Reduced EF (38% → 45%), improving
+3. Hypertension — optimised
+4. Type 2 Diabetes Mellitus — insulin bridging, metformin restarted
+5. Hyperlipidaemia — escalated to high-intensity statin + ezetimibe

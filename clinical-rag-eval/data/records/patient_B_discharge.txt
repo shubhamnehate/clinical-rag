@@ -1,0 +1,103 @@
+DISCHARGE SUMMARY
+Patient: [PATIENT_B]
+MRN: [MRN_REDACTED]
+Date of Admission: 2026-01-18
+Date of Discharge: 2026-01-23
+Attending: [PROVIDER_3]
+
+CHIEF COMPLAINT:
+Progressive dyspnoea on exertion and bilateral leg swelling over 3 weeks.
+
+HISTORY OF PRESENT ILLNESS:
+[PATIENT_B] is a 72-year-old female with a history of hypertension, chronic
+heart failure with reduced ejection fraction (HFrEF, LVEF 30–35%), atrial
+fibrillation (permanent), and chronic kidney disease stage 3a. She presented
+with a 3-week history of worsening exertional dyspnoea (now limiting activities
+of daily living), orthopnoea (2-pillow), paroxysmal nocturnal dyspnoea, and
+bilateral lower limb pitting oedema to the knees.
+
+Reported weight gain of 4 kg over 2 weeks. No chest pain, no fever, no
+haemoptysis. Recent medication non-compliance reported (missed furosemide doses
+over past week due to travel).
+
+PAST MEDICAL HISTORY:
+- HFrEF (LVEF 30–35%, diagnosed 2021 following viral myocarditis)
+- Permanent atrial fibrillation (rate-controlled)
+- Hypertension
+- CKD stage 3a (baseline creatinine 130–140 μmol/L, eGFR 45–50)
+- Osteoporosis
+
+MEDICATIONS ON ADMISSION:
+- Furosemide 80 mg twice daily
+- Carvedilol 12.5 mg twice daily
+- Sacubitril/Valsartan (Entresto) 97/103 mg twice daily
+- Spironolactone 25 mg once daily
+- Digoxin 125 mcg once daily
+- Warfarin (target INR 2.0–3.0)
+- Alendronate 70 mg weekly
+
+ALLERGIES:
+ACE inhibitors (cough — now on ARNI)
+
+PHYSICAL EXAMINATION ON ADMISSION:
+Vital Signs: BP 148/88 mmHg, HR 88 bpm (irregularly irregular), RR 22, SpO2 91% RA
+Weight: 78 kg (dry weight ~74 kg)
+General: Comfortable at rest, dyspnoeic on minimal exertion
+JVP: Elevated (5 cm above sternal angle at 45°)
+Cardiovascular: Irregular rhythm, S3 gallop present, no murmurs
+Respiratory: Bibasilar crackles to mid-zones bilaterally
+Abdomen: Mild hepatomegaly, no ascites
+Extremities: Bilateral pitting oedema 3+ to knees
+
+INVESTIGATIONS:
+ECG: Atrial fibrillation, ventricular rate 85–90 bpm, no ischaemic changes
+BNP: 2840 pg/mL (CRITICALLY ELEVATED; prior baseline ~600–800 pg/mL)
+Creatinine: 148 μmol/L (elevated from baseline; likely pre-renal)
+eGFR: 38 mL/min/1.73m² (decreased from baseline 48)
+Potassium: 3.3 mmol/L (LOW)
+Sodium: 133 mmol/L (low-normal)
+INR: 2.4 (therapeutic)
+Troponin I: 0.06 ng/mL (mildly elevated — likely demand ischaemia in decompensated HF)
+Chest X-Ray: Cardiomegaly, bilateral pulmonary oedema, bilateral pleural effusions (small)
+
+HOSPITAL COURSE:
+Admitted for acute decompensated heart failure (ADHF) secondary to medication
+non-compliance and likely dietary indiscretion.
+
+IV furosemide initiated (80 mg twice daily → 160 mg twice daily as tolerated).
+Achieved net diuresis of 1.0–1.5 L/day. Weight decreased from 78 kg to 74.2 kg.
+Potassium replaced (IV KCl on day 1, oral supplementation thereafter).
+BNP trended down: 2840 → 1650 → 980 pg/mL on day 5.
+Creatinine stabilised at 138 μmol/L (eGFR 43) by day 3, did not worsen further.
+Entresto held days 1–2 (renal impairment), restarted day 3 at reduced dose.
+Digoxin level: 0.9 ng/mL (therapeutic).
+Heart failure specialist review on day 2 — added low-dose spironolactone titration plan.
+Patient education on daily weights, fluid restriction (1.5 L/day), low-sodium diet.
+Medication compliance counselling and blister pack arranged.
+
+DISCHARGE CONDITION:
+Improved. SpO2 96% on room air. Weight 74.2 kg. Minimal residual oedema.
+
+DISCHARGE MEDICATIONS:
+1. Furosemide 80 mg twice daily (increase to 120 mg BD if weight +2 kg over 48h)
+2. Carvedilol 12.5 mg twice daily (maintain; uptitrate at outpatient visit)
+3. Sacubitril/Valsartan 49/51 mg twice daily (reduced dose; uptitrate at 2-week review)
+4. Spironolactone 25 mg once daily (continue)
+5. Digoxin 125 mcg once daily (continue; repeat level in 4 weeks)
+6. Warfarin (dose adjusted: 5 mg Mon/Wed/Fri, 4 mg other days; target INR 2.0–3.0)
+7. Potassium chloride 600 mg twice daily × 2 weeks (replace deficit)
+8. Alendronate 70 mg weekly (continue)
+
+FOLLOW-UP PLAN:
+- Heart failure clinic in 1 week (weight, electrolytes, renal function, BP)
+- INR check in 1 week
+- Repeat BNP and echocardiogram in 4 weeks
+- GP in 2 weeks (medication reconciliation)
+- Community heart failure nurse follow-up arranged (daily weight monitoring)
+
+DIAGNOSES:
+1. Acute decompensated HFrEF (LVEF 30–35%) — secondary to non-compliance
+2. Permanent atrial fibrillation — rate controlled
+3. AKI on CKD stage 3a — resolved
+4. Hypokalaemia — corrected
+5. Hyponatraemia (mild) — improved

@@ -1,0 +1,846 @@
+# Clinical RAG System - Master Configuration
+
+# ============================================================================
+# SYSTEM SETTINGS
+# ============================================================================
+system:
+  name: "Clinical RAG System"
+  version: "1.0.0"
+  environment: "production"  # development, staging, production
+
+  # Context window settings
+  context:
+    max_window_tokens: 200000  # Claude Sonnet 4.5
+    default_budget_tokens: 8000
+    reserved_query_tokens: 500
+    reserved_response_tokens: 2000
+
+  # Query processing
+  query:
+    max_retries: 2
+    default_confidence_threshold: 0.7
+    low_confidence_threshold: 0.5
+    max_query_length: 1000
+    timeout_seconds: 30
+
+  # Rate limiting
+  rate_limits:
+    queries_per_minute: 100
+    ingestion_per_minute: 50
+    structured_queries_per_minute: 200
+    eval_per_hour: 10
+
+# ============================================================================
+# DATABASE CONFIGURATION
+# ============================================================================
+databases:
+
+  # PostgreSQL (Structured data)
+  postgres:
+    host: "postgres.clinical-rag.internal"
+    port: 5432
+    database: "clinical_rag"
+    username: "${POSTGRES_USER}"
+    password: "${POSTGRES_PASSWORD}"
+    pool_size: 20
+    max_overflow: 10
+    pool_timeout: 30
+    ssl_mode: "require"
+    connection_string: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres.clinical-rag.internal:5432/clinical_rag?sslmode=require"
+
+  # Vector Database (Pinecone, Milvus, or Weaviate)
+  vector_db:
+    type: "pinecone"  # pinecone, milvus, weaviate
+
+    # Pinecone configuration
+    pinecone:
+      api_key: "${PINECONE_API_KEY}"
+      environment: "us-west1-gcp"
+      index_name: "clinical-chunks"
+      dimension: 384
+      metric: "cosine"
+      pods: 2
+      replicas: 1
+
+    # Milvus configuration (alternative)
+    milvus:
+      host: "milvus.clinical-rag.internal"
+      port: 19530
+      collection_name: "clinical_chunks"
+      dimension: 384
+      index_type: "HNSW"
+      metric_type: "L2"
+
+    # Search parameters
+    search:
+      top_k: 10
+      min_score: 0.5
+      ef_search: 100  # HNSW parameter
+      nprobe: 10  # IVF parameter
+
+  # Redis (Cache)
+  redis:
+    host: "redis.clinical-rag.internal"
+    port: 6379
+    password: "${REDIS_PASSWORD}"
+    db: 0
+    ssl: true
+    max_connections: 50
+    socket_timeout: 5
+    socket_connect_timeout: 5
+
+    # Cache settings
+    cache:
+      default_ttl_seconds: 3600
+      max_entries: 10000
+      eviction_policy: "allkeys-lru"
+
+  # Elasticsearch (Sparse retrieval)
+  elasticsearch:
+    hosts:
+      - "https://es-node1.clinical-rag.internal:9200"
+      - "https://es-node2.clinical-rag.internal:9200"
+    username: "${ES_USERNAME}"
+    password: "${ES_PASSWORD}"
+    index_name: "clinical_chunks"
+    ssl_verify_certs: true
+    timeout: 30
+
+# ============================================================================
+# EMBEDDING MODELS
+# ============================================================================
+embeddings:
+  # Dense embeddings
+  dense:
+    model_name: "sentence-transformers/all-MiniLM-L6-v2"
+    # Alternative: "pritamdeka/BioBERT-mnli-snli-scinli-scitail-mednli-stsb"
+    dimension: 384
+    normalize: true
+    batch_size: 32
+    max_length: 512
+
+    # Model hosting
+    hosting:
+      type: "sagemaker"  # sagemaker, huggingface, local
+      endpoint: "${EMBEDDING_ENDPOINT}"
+
+  # Reranking model
+  reranker:
+    enabled: true
+    model_name: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+    batch_size: 16
+    min_score: 0.6
+    top_k: 5  # Return top 5 after reranking
+
+# ============================================================================
+# LLM CONFIGURATION
+# ============================================================================
+llm:
+  provider: "anthropic"  # anthropic, openai, bedrock
+
+  # Anthropic Configuration
+  anthropic:
+    api_key: "${ANTHROPIC_API_KEY}"
+    model: "claude-sonnet-4.5"
+    max_tokens: 2000
+    temperature: 0.1
+    top_p: 0.9
+    timeout: 60
+
+  # AWS Bedrock Configuration (alternative)
+  bedrock:
+    region: "us-west-2"
+    model_id: "anthropic.claude-sonnet-4-5-20250929-v1:0"
+
+  # Retry configuration
+  retry:
+    max_attempts: 3
+    backoff_factor: 2
+    max_backoff_seconds: 30
+
+# ============================================================================
+# INGESTION PIPELINE
+# ============================================================================
+ingestion:
+
+  # Document loaders
+  loaders:
+    text:
+      enabled: true
+      extensions: [".txt", ".rtf"]
+      encoding: "utf-8"
+
+    pdf:
+      enabled: true
+      extensions: [".pdf"]
+      engine: "pypdf2"  # pypdf2, pdfplumber, pymupdf
+
+    dicom:
+      enabled: true
+      extensions: [".dcm"]
+      extract_metadata: true
+      extract_text_reports: true
+      store_pixel_data: false
+
+    hl7:
+      enabled: true
+      extensions: [".hl7"]
+      version: "2.5"
+
+    fhir:
+      enabled: true
+      extensions: [".json"]
+      version: "R4"
+
+  # PII Detection & Pseudonymization
+  pii:
+    detection:
+      enabled: true
+      confidence_threshold: 0.8
+      patterns:
+        ssn: "\\d{3}-\\d{2}-\\d{4}"
+        phone: "\\(\\d{3}\\)\\s?\\d{3}-\\d{4}"
+        email: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+        mrn: "MRN[:\\s]?\\d{6,10}"
+
+    pseudonymization:
+      enabled: true
+      hash_algorithm: "sha256"
+      salt: "${PII_SALT}"  # Store securely in key vault
+      consistent_hashing: true
+
+    # PII mapping storage
+    mapping_storage:
+      type: "key_vault"  # key_vault, database, file
+      key_vault_url: "${KEY_VAULT_URL}"
+      encryption_key_id: "${ENCRYPTION_KEY_ID}"
+
+  # Chunking strategy
+  chunking:
+    strategy: "hybrid"  # paragraph, sentence, sliding_window, hybrid
+    target_size_tokens: 400
+    max_size_tokens: 800
+    min_size_tokens: 100
+    overlap_tokens: 50
+    preserve_sections: true
+
+    # Section detection
+    section_headers:
+      - "CHIEF COMPLAINT"
+      - "HISTORY OF PRESENT ILLNESS"
+      - "PAST MEDICAL HISTORY"
+      - "MEDICATIONS"
+      - "ALLERGIES"
+      - "PHYSICAL EXAMINATION"
+      - "ASSESSMENT AND PLAN"
+      - "LAB RESULTS"
+      - "IMAGING"
+
+  # Document versioning
+  versioning:
+    enabled: true
+    retain_old_versions: true
+    archive_after_days: 90
+
+  # Batch processing
+  batch:
+    size: 10
+    timeout_seconds: 300
+    max_workers: 4
+
+# ============================================================================
+# QUERY INTELLIGENCE
+# ============================================================================
+query_intelligence:
+
+  # Query classification
+  classifier:
+    enabled: true
+    model: "simple_keyword"  # simple_keyword, ml_classifier
+    confidence_threshold: 0.7
+
+    # Query types and parameters
+    query_types:
+      factual_lookup:
+        k: 5
+        rerank: true
+        use_dense: true
+        use_sparse: true
+
+      explanation:
+        k: 10
+        rerank: true
+        use_dense: true
+        use_sparse: false
+
+      comparison:
+        k: 20
+        rerank: true
+        use_dense: true
+        use_sparse: true
+        temporal_sort: true
+
+      multi_hop:
+        k: 15
+        rerank: true
+        iterative: true
+        max_hops: 3
+
+      summarization:
+        k: 50
+        rerank: false
+        document_level: true
+
+      temporal:
+        k: 10
+        rerank: true
+        date_filter: true
+
+      structured_query:
+        use_vector_search: false
+        use_structured_db: true
+
+  # Query expansion
+  expansion:
+    enabled: true
+    max_terms: 10
+    use_medical_ontology: true
+    ontology_sources:
+      - "UMLS"
+      - "SNOMED_CT"
+      - "RxNorm"
+    expand_abbreviations: true
+    add_synonyms: true
+    add_related_concepts: true
+
+  # Query routing
+  router:
+    enable_structured_path: true
+    enable_multi_hop: true
+    enable_graph_traversal: false  # Requires knowledge graph
+
+# ============================================================================
+# RETRIEVAL PIPELINE
+# ============================================================================
+retrieval:
+
+  # Dense retrieval
+  dense:
+    enabled: true
+    k: 10
+    min_score: 0.5
+    use_query_expansion: true
+
+  # Sparse retrieval (BM25)
+  sparse:
+    enabled: true
+    algorithm: "bm25"
+    k1: 1.5  # Term frequency saturation
+    b: 0.75  # Length normalization
+    k: 10
+
+  # Hybrid fusion
+  hybrid:
+    enabled: true
+    fusion_method: "reciprocal_rank"  # reciprocal_rank, weighted_sum
+    rrf_k: 60
+    weights:
+      dense: 1.0
+      sparse: 0.8
+      structured: 1.2
+
+  # Reranking
+  reranking:
+    enabled: true
+    stage: "after_hybrid"  # after_dense, after_hybrid
+    top_k_input: 20
+    top_k_output: 5
+
+  # Metadata filtering
+  filtering:
+    enforce_patient_filter: true  # CRITICAL for security
+    enforce_version_filter: true  # Only retrieve latest version
+    allowed_statuses: ["active"]
+
+  # Structured query execution
+  structured:
+    enabled: true
+    timeout_seconds: 10
+    max_results: 100
+
+# ============================================================================
+# PROMPT CONSTRUCTION
+# ============================================================================
+prompt:
+
+  # Context assembly
+  context:
+    max_chunks: 50
+    deduplication_threshold: 0.8
+    sort_by: "relevance"  # relevance, chronological, document_type
+    include_metadata: true
+
+  # PII guard (pre-LLM)
+  pii_guard:
+    enabled: true  # CRITICAL
+    scan_level: "strict"  # strict, normal, lenient
+    block_on_detection: true
+    allowed_pseudonyms: true
+
+  # Template selection
+  templates:
+    default: "clinical_qa"
+    by_query_type:
+      factual_lookup: "factual_qa"
+      explanation: "explanation"
+      comparison: "comparison"
+      multi_hop: "multi_hop"
+      summarization: "summarization"
+
+# ============================================================================
+# POST-PROCESSING
+# ============================================================================
+post_processing:
+
+  # Confidence scoring
+  confidence:
+    enabled: true
+    weights:
+      retrieval_quality: 0.4
+      answer_grounding: 0.3
+      query_complexity: 0.15
+      context_coverage: 0.15
+
+    thresholds:
+      high: 0.8
+      medium: 0.7
+      low: 0.5
+
+  # Output validation
+  validation:
+    enabled: true
+
+    # PII scan (CRITICAL - Layer 3)
+    pii_scan:
+      enabled: true  # MUST be true
+      block_on_detection: true
+      scan_level: "strict"
+
+    # Hallucination detection
+    hallucination_check:
+      enabled: true
+      strict_grounding: true
+
+    # Safety check
+    safety_check:
+      enabled: true
+      check_medical_advice: true
+
+  # Feedback loop
+  feedback_loop:
+    enabled: true
+    trigger_threshold: 0.7
+    max_retries: 2
+
+    retry_strategies:
+      - type: "query_expansion"
+        increase_k_by: 0.5
+      - type: "broader_context"
+        relax_filters: true
+
+# ============================================================================
+# CACHE SYSTEM
+# ============================================================================
+cache:
+
+  # Semantic cache
+  semantic:
+    enabled: true
+    similarity_threshold: 0.90
+    max_entries: 10000
+    default_ttl_seconds: 3600
+
+  # Cache invalidation
+  invalidation:
+    strategy: "document_based"  # ttl, document_based, manual
+
+    # Document-based invalidation
+    document_based:
+      enabled: true
+      invalidate_on_new_document: true
+      invalidate_on_document_update: true
+
+    # TTL settings
+    ttl:
+      default: 3600
+      by_query_type:
+        factual_lookup: 3600
+        summarization: 1800
+        temporal: 900
+
+  # Cache warming
+  warming:
+    enabled: false
+    common_queries_file: "config/common_queries.json"
+
+# ============================================================================
+# STRUCTURED DATA HANDLING
+# ============================================================================
+structured_data:
+
+  # FHIR processing
+  fhir:
+    enabled: true
+    version: "R4"
+    validate_resources: true
+
+    # Resource types to process
+    resource_types:
+      - "Patient"
+      - "MedicationStatement"
+      - "Condition"
+      - "Observation"
+      - "Procedure"
+      - "Encounter"
+      - "AllergyIntolerance"
+
+    # Field extraction
+    extraction:
+      enabled: true
+      flatten_to_tables: true
+
+  # HL7 processing
+  hl7:
+    enabled: true
+    version: "2.5"
+    convert_to_fhir: true
+
+    # Message types
+    message_types:
+      - "ADT"
+      - "ORU"
+      - "ORM"
+
+  # DICOM processing
+  dicom:
+    enabled: true
+    extract_metadata: true
+    extract_reports: true
+    store_as_structured: true
+
+# ============================================================================
+# EVALUATION FRAMEWORK
+# ============================================================================
+evaluation:
+
+  # Evaluation datasets
+  datasets:
+    factual_qa:
+      path: "eval_data/factual_qa.json"
+      size: 100
+
+    multi_hop_qa:
+      path: "eval_data/multi_hop_qa.json"
+      size: 50
+
+    pii_audit:
+      path: "eval_data/pii_audit.json"
+      size: 30
+
+  # Metrics
+  metrics:
+    retrieval:
+      - "recall@5"
+      - "recall@10"
+      - "mrr"
+      - "ndcg@5"
+
+    answer:
+      - "exact_match"
+      - "f1_score"
+      - "rouge_l"
+      - "bertscore"
+
+    pii:
+      - "leakage_rate"
+      - "false_positive_rate"
+      - "false_negative_rate"
+
+    system:
+      - "avg_latency_ms"
+      - "p95_latency_ms"
+      - "cache_hit_rate"
+      - "retry_rate"
+
+  # Continuous evaluation
+  continuous:
+    enabled: true
+    schedule: "0 2 * * *"  # Daily at 2 AM
+    alert_on_regression: true
+    regression_threshold: 0.05  # 5% drop
+
+# ============================================================================
+# OBSERVABILITY
+# ============================================================================
+observability:
+
+  # Logging
+  logging:
+    level: "INFO"  # DEBUG, INFO, WARN, ERROR, CRITICAL
+    format: "json"
+    output: "stdout"
+
+    # Log destinations
+    destinations:
+      - type: "stdout"
+      - type: "file"
+        path: "/var/log/clinical-rag/app.log"
+        max_size_mb: 100
+        backup_count: 5
+      - type: "cloudwatch"
+        log_group: "/aws/clinical-rag"
+        stream_name: "${HOSTNAME}"
+
+    # Sensitive data handling
+    redact_pii: true
+    log_query_text: false  # PII risk
+    log_query_hash: true
+
+  # Metrics
+  metrics:
+    enabled: true
+    provider: "prometheus"  # prometheus, cloudwatch, datadog
+
+    prometheus:
+      port: 9090
+      path: "/metrics"
+
+    # Metric collection
+    collect:
+      - "query_latency"
+      - "retrieval_latency"
+      - "llm_latency"
+      - "cache_hit_rate"
+      - "confidence_score"
+      - "error_rate"
+
+  # Tracing
+  tracing:
+    enabled: true
+    provider: "opentelemetry"  # opentelemetry, jaeger, zipkin
+
+    opentelemetry:
+      endpoint: "http://otel-collector:4317"
+      service_name: "clinical-rag"
+
+    # Sampling
+    sampling:
+      rate: 0.1  # 10% of requests
+      always_sample_errors: true
+
+  # Audit trail
+  audit:
+    enabled: true  # REQUIRED for healthcare
+    retention_days: 2555  # 7 years for HIPAA
+
+    # Audit events
+    events:
+      - "patient_record_accessed"
+      - "document_ingested"
+      - "document_updated"
+      - "query_executed"
+      - "pii_detected"
+      - "unauthorized_access_attempt"
+
+    # Audit storage
+    storage:
+      type: "database"  # database, s3, cloudwatch
+      table: "audit_log"
+
+  # Alerting
+  alerting:
+    enabled: true
+    provider: "pagerduty"  # pagerduty, slack, email
+
+    # Alert rules
+    rules:
+      - name: "PII Leakage Detected"
+        condition: "pii_leakage_count > 0"
+        severity: "critical"
+        notify: ["oncall", "security_team"]
+
+      - name: "High Error Rate"
+        condition: "error_rate > 0.05"
+        severity: "error"
+        notify: ["oncall"]
+
+      - name: "High Latency"
+        condition: "p95_latency_ms > 2000"
+        severity: "warn"
+        notify: ["ops_team"]
+
+# ============================================================================
+# SECURITY
+# ============================================================================
+security:
+
+  # Authentication
+  authentication:
+    type: "jwt"  # jwt, oauth2, saml
+    jwt:
+      secret: "${JWT_SECRET}"
+      algorithm: "HS256"
+      expiration_seconds: 3600
+      refresh_expiration_seconds: 86400
+
+  # Authorization
+  authorization:
+    type: "rbac"  # rbac, abac
+
+    roles:
+      - name: "physician"
+        permissions:
+          - "read:patient_records"
+          - "query:clinical_data"
+          - "ingest:documents"
+
+      - name: "nurse"
+        permissions:
+          - "read:patient_records"
+          - "query:clinical_data"
+
+      - name: "admin"
+        permissions:
+          - "read:patient_records"
+          - "query:clinical_data"
+          - "ingest:documents"
+          - "manage:system"
+          - "access:audit_logs"
+
+  # Encryption
+  encryption:
+    at_rest:
+      enabled: true
+      algorithm: "AES-256-GCM"
+      key_rotation_days: 90
+
+    in_transit:
+      enabled: true
+      tls_version: "1.3"
+      certificate_path: "/etc/ssl/certs/clinical-rag.crt"
+
+  # Network security
+  network:
+    vpc_id: "${VPC_ID}"
+    allowed_ips: []  # Empty = allow all (configure for production)
+
+    # API gateway
+    api_gateway:
+      rate_limiting: true
+      ddos_protection: true
+      waf_enabled: true
+
+  # Compliance
+  compliance:
+    hipaa_compliant: true
+    gdpr_compliant: false  # Set true if serving EU patients
+    audit_trail_enabled: true
+    data_retention_days: 2555  # 7 years
+
+# ============================================================================
+# DEPLOYMENT
+# ============================================================================
+deployment:
+
+  # Environment
+  environment: "production"  # development, staging, production
+  region: "us-west-2"
+
+  # Compute resources
+  compute:
+    api_server:
+      instance_type: "c5.2xlarge"
+      min_instances: 2
+      max_instances: 10
+      cpu_threshold: 70
+      memory_threshold: 80
+
+    embedding_service:
+      instance_type: "g4dn.xlarge"  # GPU instance
+      min_instances: 1
+      max_instances: 3
+
+    worker:
+      instance_type: "c5.xlarge"
+      min_instances: 2
+      max_instances: 20
+
+  # Storage
+  storage:
+    vector_db:
+      storage_size_gb: 500
+      backup_enabled: true
+      backup_schedule: "0 1 * * *"  # Daily at 1 AM
+
+    postgres:
+      storage_size_gb: 1000
+      instance_type: "db.r5.xlarge"
+      backup_enabled: true
+      backup_retention_days: 30
+
+    redis:
+      memory_gb: 32
+      persistence: true
+
+  # Monitoring
+  monitoring:
+    health_check_interval_seconds: 30
+    unhealthy_threshold: 3
+
+  # Updates
+  updates:
+    strategy: "rolling"  # rolling, blue_green, canary
+    max_unavailable: 1
+    max_surge: 2
+
+# ============================================================================
+# FEATURE FLAGS
+# ============================================================================
+features:
+  enable_cache: true
+  enable_reranking: true
+  enable_query_expansion: true
+  enable_feedback_loop: true
+  enable_structured_queries: true
+  enable_multi_hop: true
+  enable_graph_traversal: false  # Requires KG
+  enable_dicom_processing: true
+  enable_hl7_processing: true
+  enable_fhir_processing: true
+
+# ============================================================================
+# EXPERIMENTAL
+# ============================================================================
+experimental:
+
+  # Knowledge graph
+  knowledge_graph:
+    enabled: false
+    type: "neo4j"
+    host: "neo4j.clinical-rag.internal"
+
+  # Multi-modal
+  multimodal:
+    enabled: false
+    process_images: false
+    process_audio: false
+
+  # Active learning
+  active_learning:
+    enabled: false
+    feedback_collection: false
+
+# ============================================================================
+# END OF CONFIGURATION
+# ============================================================================
+

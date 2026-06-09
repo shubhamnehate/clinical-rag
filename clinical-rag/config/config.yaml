@@ -1,0 +1,156 @@
+system:
+  name: "Clinical RAG System"
+  version: "1.0.0"
+  environment: "${ENVIRONMENT:development}"
+  context:
+    max_window_tokens: 200000
+    default_budget_tokens: 8000
+    reserved_query_tokens: 500
+    reserved_response_tokens: 2000
+  query:
+    max_retries: 2
+    default_confidence_threshold: 0.7
+    low_confidence_threshold: 0.5
+    max_query_length: 1000
+    timeout_seconds: 30
+
+databases:
+  postgres:
+    host: "${POSTGRES_HOST:localhost}"
+    port: 5432
+    database: "${POSTGRES_DB:clinical_rag}"
+    username: "${POSTGRES_USER:clinical_rag_user}"
+    password: "${POSTGRES_PASSWORD}"
+    pool_size: 20
+    ssl_mode: "prefer"
+  vector_db:
+    type: "in_memory"  # in_memory, pinecone, milvus
+    pinecone:
+      api_key: "${PINECONE_API_KEY}"
+      environment: "${PINECONE_ENVIRONMENT:us-west1-gcp}"
+      index_name: "${PINECONE_INDEX_NAME:clinical-chunks}"
+      dimension: 384
+      metric: "cosine"
+    search:
+      top_k: 10
+      min_score: 0.3
+  redis:
+    host: "${REDIS_HOST:localhost}"
+    port: 6379
+    password: "${REDIS_PASSWORD}"
+    db: 0
+    ssl: false
+    cache:
+      default_ttl_seconds: 3600
+      max_entries: 10000
+  elasticsearch:
+    hosts:
+      - "http://${ES_HOST:localhost}:9200"
+    username: "${ES_USERNAME:elastic}"
+    password: "${ES_PASSWORD}"
+    index_name: "clinical_chunks"
+    timeout: 30
+
+embeddings:
+  dense:
+    model_name: "sentence-transformers/all-MiniLM-L6-v2"
+    dimension: 384
+    normalize: true
+    batch_size: 32
+    max_length: 512
+  reranker:
+    enabled: true
+    model_name: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+    batch_size: 16
+    min_score: 0.0
+    top_k: 5
+
+llm:
+  provider: "anthropic"
+  anthropic:
+    api_key: "${ANTHROPIC_API_KEY}"
+    model: "claude-sonnet-4-5-20250929"
+    max_tokens: 2000
+    temperature: 0.1
+    top_p: 0.9
+    timeout: 60
+  retry:
+    max_attempts: 3
+    backoff_factor: 2
+    max_backoff_seconds: 30
+
+ingestion:
+  loaders:
+    text:
+      enabled: true
+      extensions: [".txt", ".rtf"]
+    pdf:
+      enabled: true
+      extensions: [".pdf"]
+    dicom:
+      enabled: true
+      extensions: [".dcm"]
+      extract_metadata: true
+      store_pixel_data: false
+    hl7:
+      enabled: true
+      extensions: [".hl7"]
+    fhir:
+      enabled: true
+      extensions: [".json"]
+  pii:
+    detection:
+      enabled: true
+      confidence_threshold: 0.8
+    pseudonymization:
+      enabled: true
+      hash_algorithm: "sha256"
+      salt: "${PII_SALT:default_salt_change_me}"
+  chunking:
+    strategy: "hybrid"
+    target_size_tokens: 400
+    max_size_tokens: 800
+    min_size_tokens: 100
+    overlap_tokens: 50
+    preserve_sections: true
+  versioning:
+    enabled: true
+    retain_old_versions: true
+
+query_intelligence:
+  classifier:
+    enabled: true
+    model: "simple_keyword"
+    confidence_threshold: 0.7
+  expander:
+    enabled: true
+    max_expanded_terms: 10
+    min_confidence: 0.7
+
+retrieval:
+  dense:
+    top_k: 10
+    min_score: 0.3
+  sparse:
+    top_k: 10
+    k1: 1.5
+    b: 0.75
+  hybrid:
+    dense_weight: 0.7
+    sparse_weight: 0.3
+    fusion_method: "reciprocal_rank"
+    rrf_k: 60
+  reranking:
+    enabled: true
+    top_k: 5
+
+cache:
+  similarity_threshold: 0.90
+  ttl_seconds: 3600
+  enabled: true
+
+observability:
+  log_level: "${LOG_LEVEL:INFO}"
+  audit:
+    enabled: true
+    retention_years: 7
