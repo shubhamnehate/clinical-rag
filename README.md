@@ -588,22 +588,6 @@ locust -f tests/load/locustfile.py --host https://api.example.com
 - [ ] Team trained
 - [ ] On-call rotation established
 
----
-
-## 📞 Support
-
-- **Documentation**: See docs/ folder
-- **Issues**: Check DEPLOYMENT_GUIDE.md troubleshooting section
-- **Security Issues**: security@example.com (CRITICAL issues)
-- **On-Call**: oncall@example.com
-
----
-
-## 📄 License
-
-[Specify your license]
-
----
 
 ## 🙏 Acknowledgments
 
