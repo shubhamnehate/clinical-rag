@@ -1,0 +1,10 @@
+# Hardening defaults for the public demo deployment.
+[server]
+maxUploadSize = 5
+
+[browser]
+gatherUsageStats = false
+
+[client]
+showErrorDetails = false
+toolbarMode = "minimal"
